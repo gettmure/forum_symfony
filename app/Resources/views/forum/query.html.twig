@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Forum Query
+{% endblock title%}
+
+{% block body %}
+    <div class="d-flex container-fluid justify-content-center">
+        <h1>The result of the query</h1>
+    </div>
+    <hr></hr>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="d-flex justify-content-center col-sm">
+                Username
+            </div>
+            <div class="d-flex justify-content-center col-sm">
+                Category
+            </div>
+            <div class="d-flex justify-content-center col-sm">
+                Message text
+            </div>
+            <div class="d-flex justify-content-center col-sm">
+                Posted at
+            </div>
+        </div>
+
+        {% for row in data %}
+            <div class="row">
+                <div class="d-flex justify-content-center col-sm">
+                    {{ row.name }}
+                </div>
+                <div class="d-flex justify-content-center col-sm">
+                    {{ row.category_name }}
+                </div>
+                <div class="d-flex justify-content-center col-sm">
+                    {{ row.text }}
+                </div>
+                <div class="d-flex justify-content-center col-sm">
+                    {{ row.posted_at }}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock body %}
