@@ -43,7 +43,7 @@ doctrine:
         host: localhost
         port: 5432
         dbname: forum
-        user: postgres
+        user: gettmure
         password: 1234
         charset: UTF8
         # if using pdo_sqlite as your database driver:

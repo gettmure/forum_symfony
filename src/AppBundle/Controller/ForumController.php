@@ -12,7 +12,7 @@ class ForumController extends Controller
 {
 
     /**
-     * @Route("/forum", name="forum_index")
+     * @Route("/", name="forum_index")
      */
     public function showIndexPageAction()
     {
@@ -20,7 +20,7 @@ class ForumController extends Controller
     }
 
     /**
-     * @Route("/forum/query", name="forum_show_query")
+     * @Route("/query", name="forum_show_query")
      */
     public function showQueryAction()
     {
