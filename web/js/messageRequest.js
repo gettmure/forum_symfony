@@ -22,15 +22,18 @@ $(document).ready(function () {
                         // is what we were expecting,
                         // so retrive the response and use if
 
-                        if (typeof response.message != "undefined" && response.message != "undefined")
+                        if (typeof response.user_id != "undefined" && response.user_id != "undefined" &&
+                            typeof response.category_id != "undefined" && response.category_id != "undefined")
                         {
-                            // Do whatever you need with data.message
+                            alert('OK');
                         }
                     }
                 }
             },
+            error: function () {
+                alert('ERROR');
+            }
         });
         return false;
-        // console.log(temp)
     });
 });

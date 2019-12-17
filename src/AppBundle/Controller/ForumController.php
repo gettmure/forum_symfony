@@ -48,22 +48,27 @@ class ForumController extends Controller
     public function newMessageAction(Request $request)
     {
         $entityManager = $this->getDoctrine()->getManager();
-        $name = $request->get('name');
-        $id = $entityManager->getRepository('AppBundle:Users')->findOneByUsername($name);
-        dump($id);
-        die;
-//        if(!$id) {
-//            return new JsonResponse(array(
-//                'status' => 'Error',
-//                'message' => 'Error'),
-//                400);
-//        }
-//        else {
-//            return new JsonResponse(array(
-//                'status' => 'OK',
-//                'message' => $id),
-//                200);
-//        }
+
+        $userName = $request->get('name');
+        $categoryName = $request->get('category_name');
+        $messageText = $request->get('text');
+
+        $userId = $entityManager->getRepository('AppBundle:Users')->findOneByUserName($userName);
+        $categoryId = $entityManager->getRepository('AppBundle:Categories')->findOneByCategoryName($categoryName);
+
+        if(!$userId || !$categoryId) {
+            return new JsonResponse(array(
+                'status' => 'Error',
+                'message' => 'Error'),
+                400);
+        }
+        else {
+            return new JsonResponse(array(
+                'status' => 'OK',
+                'user_id' => $userId,
+                'category_id' => $categoryId),
+                200);
+        }
 
 //        return new Response($request);
 //        return new JsonResponse($request->request->get('request'));
