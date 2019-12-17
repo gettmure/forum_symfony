@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Category;
 use AppBundle\Entity\Message;
+use AppBundle\Entity\Messages;
 use AppBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -63,6 +64,9 @@ class ForumController extends Controller
                 400);
         }
         else {
+            $newMessage = new Messages($userId, $categoryId, $messageText);
+            $entityManager->persist($newMessage);
+            $entityManager->flush();
             return new JsonResponse(array(
                 'status' => 'OK',
                 'user_id' => $userId,

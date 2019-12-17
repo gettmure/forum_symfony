@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Uuid;
 
 /**
  * Messages
@@ -48,7 +49,14 @@ class Messages
      */
     private $id;
 
-
+    public function __construct($author, $category, $text)
+    {
+        $this->id = Uuid::uuid4();
+        $this->setAuthorId($author);
+        $this->setCategoryId($category);
+        $this->setPostedAt(new \DateTime());
+        $this->setText($text);
+    }
 
     /**
      * Set text

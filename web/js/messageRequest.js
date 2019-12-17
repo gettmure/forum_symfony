@@ -14,18 +14,13 @@ $(document).ready(function () {
             success: function (response) {
                 if (typeof response.status != "undefined" && response.status != "undefined")
                 {
-                    // At this point we know that the status is defined,
-                    // so we need to check for its value ("OK" in my case)
                     if (response.status == "OK")
                     {
-                        // At this point we know that the server response
-                        // is what we were expecting,
-                        // so retrive the response and use if
-
                         if (typeof response.user_id != "undefined" && response.user_id != "undefined" &&
                             typeof response.category_id != "undefined" && response.category_id != "undefined")
                         {
-                            alert('OK');
+                            alert('Message has been successfuly added!');
+                            location.href = '/';
                         }
                     }
                 }
