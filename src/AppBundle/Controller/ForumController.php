@@ -57,7 +57,7 @@ class ForumController extends Controller
         $userId = $entityManager->getRepository('AppBundle:Users')->findOneByUserName($userName);
         $categoryId = $entityManager->getRepository('AppBundle:Categories')->findOneByCategoryName($categoryName);
 
-        if(!$userId || !$categoryId) {
+        if (!$userId || !$categoryId) {
             return new JsonResponse(array(
                 'status' => 'Error',
                 'message' => 'Error'),
@@ -70,7 +70,8 @@ class ForumController extends Controller
             return new JsonResponse(array(
                 'status' => 'OK',
                 'user_id' => $userId,
-                'category_id' => $categoryId),
+                'category_id' => $categoryId,
+                'message_id' => $newMessage->getId()),
                 200);
         }
 
