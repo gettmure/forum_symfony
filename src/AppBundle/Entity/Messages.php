@@ -9,6 +9,7 @@ use Ramsey\Uuid\Uuid;
  * Messages
  *
  * @ORM\Table(name="messages")
+ *
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MessagesRepository")
  */
 class Messages
@@ -21,11 +22,27 @@ class Messages
     private $text;
 
     /**
-     * @var guid
-     *
-     * @ORM\Column(name="category_id", type="guid", nullable=false)
+     * @ORM\ManyToOne(targetEntity="Categories", inversedBy="messages")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $categoryId;
+    private $category;
+
+    /**
+     * @return mixed
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
+     * @param mixed $category
+     * @return Categories
+     */
+    public function setCategory(Categories $category)
+    {
+        $this->category = $category;
+    }
 
     /**
      * @var \DateTime
@@ -80,30 +97,6 @@ class Messages
     public function getText()
     {
         return $this->text;
-    }
-
-    /**
-     * Set categoryId
-     *
-     * @param guid $categoryId
-     *
-     * @return Messages
-     */
-    public function setCategoryId($categoryId)
-    {
-        $this->categoryId = $categoryId;
-
-        return $this;
-    }
-
-    /**
-     * Get categoryId
-     *
-     * @return guid
-     */
-    public function getCategoryId()
-    {
-        return $this->categoryId;
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Categories;
 use AppBundle\Entity\Category;
 use AppBundle\Entity\Message;
 use AppBundle\Entity\Messages;
@@ -9,7 +10,6 @@ use AppBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ForumController extends Controller
@@ -20,7 +20,34 @@ class ForumController extends Controller
      */
     public function showIndexPage()
     {
-        return $this->render('forum/index.html.twig', []);
+        $entityManager = $this->getDoctrine()->getManager();
+        $categories = $entityManager->getRepository('AppBundle:Categories')->findBy(['parent' => null]);
+//        dump($categories);
+//        $messages = [];
+//        $subcategories = $entityManager->getRepository('AppBundle:Categories')->;
+//        foreach ($categories as $category) {
+//            $messages[] = $entityManager->getRepository('AppBundle:Messages')->findBy(['category' => $category]);
+//            $subcategories[] = $entityManager->getRepository('AppBundle:Categories')->findBy(['parent' => $category]);
+//        }
+        dump($categories);
+        return $this->render('forum/index.html.twig', [
+            'categories' => $categories
+        ]);
+    }
+
+    /**
+     * @Route("/{categoryName}", name="forum_category")
+     */
+    public function showCategoryPage($categoryName)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $category = $entityManager->getRepository('AppBundle:Categories')->findOneBy(['categoryName' => $categoryName]);
+        $subcategories = $entityManager->getRepository('AppBundle:Categories')->findBy(['parent' => $category]);
+        dump($subcategories);
+//        dump($category);
+        return $this->render('forum/category.html.twig', [
+            'category' => $category,
+        ]);
     }
 
     /**
@@ -74,16 +101,5 @@ class ForumController extends Controller
                 'message_id' => $newMessage->getId()),
                 200);
         }
-
-//        return new Response($request);
-//        return new JsonResponse($request->request->get('request'));
-//        $username = $request->request->get('username');
-//        $response = new Response($entityManager->getRepository('AppBundle:Users')->findOneByUsername($username));
-//        $response = $entityManager->getRepository('AppBundle:Users')->findOneByUsername($username);
-
-//        die;
-//        $username = $request->request->get('id');
-//        die;
-//        return new Response($response);
     }
 }

@@ -3,6 +3,8 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Categories
@@ -20,11 +22,37 @@ class Categories
     private $categoryName;
 
     /**
-     * @var guid
-     *
-     * @ORM\Column(name="parent_id", type="guid", nullable=true)
+     * @return string
      */
-    private $parentId;
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="text")
+     */
+    private $description;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Categories")
+     */
+    private $parent;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Messages", mappedBy="Categories")
+     */
+    private $messages;
 
     /**
      * @var guid
@@ -33,6 +61,14 @@ class Categories
      * @ORM\Id
      */
     private $id;
+
+    /**
+     * @return Collection|Messages[]
+     */
+    public function getMessages()
+    {
+        return $this->messages;
+    }
 
 
 
@@ -51,6 +87,23 @@ class Categories
     }
 
     /**
+     * @return mixed
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
+     * @param mixed $parent
+     * @return Categories
+     */
+    public function setParent(Categories $parent)
+    {
+        $this->parent = $parent;
+    }
+
+    /**
      * Get categoryName
      *
      * @return string
@@ -60,29 +113,7 @@ class Categories
         return $this->categoryName;
     }
 
-    /**
-     * Set parentId
-     *
-     * @param guid $parentId
-     *
-     * @return Categories
-     */
-    public function setParentId($parentId)
-    {
-        $this->parentId = $parentId;
 
-        return $this;
-    }
-
-    /**
-     * Get parentId
-     *
-     * @return guid
-     */
-    public function getParentId()
-    {
-        return $this->parentId;
-    }
 
     /**
      * Get id

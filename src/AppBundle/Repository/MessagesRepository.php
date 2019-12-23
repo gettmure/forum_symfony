@@ -3,6 +3,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Categories;
 use Doctrine\ORM\EntityRepository;
 
 class MessagesRepository extends EntityRepository
@@ -24,5 +25,14 @@ class MessagesRepository extends EntityRepository
         $stmt->execute();
 
         return $stmt->fetchAll();
+    }
+
+    public function findAllCategoryMessages(Categories $category)
+    {
+        return $this->createQueryBuilder('messages')
+            ->andWhere('messages.category = :category')
+            ->setParameter('category', $category)
+            ->getQuery()
+            ->execute();
     }
 }
