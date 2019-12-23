@@ -53,10 +53,9 @@
                 </div>
                 <div class="d-flex col-sm">
                     {{ category.messages|length }}
-{#                    {{ messages[loop.index0]|length }}#}
                 </div>
                 <div class="d-flex col-sm">
-{#                    {{ subcategories[loop.index0]|length }}#}
+                    {{ category.subcategories|length }}
                 </div>
             </div>
         {% endfor %}

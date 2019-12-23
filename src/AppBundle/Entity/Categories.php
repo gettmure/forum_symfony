@@ -45,12 +45,33 @@ class Categories
     private $description;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Categories")
+     * @ORM\ManyToOne(targetEntity="Categories", inversedBy="subcategories")
      */
     private $parent;
 
     /**
-     * @ORM\OneToMany(targetEntity="Messages", mappedBy="Categories")
+     * @return mixed
+     */
+    public function getSubcategories()
+    {
+        return $this->subcategories;
+    }
+
+    /**
+     * @param mixed $subcategories
+     */
+    public function setSubcategories($subcategories)
+    {
+        $this->subcategories = $subcategories;
+    }
+
+    /**
+     * @ORM\OneToMany(targetEntity="Categories", mappedBy="parent")
+     */
+    private $subcategories;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Messages", mappedBy="category")
      */
     private $messages;
 

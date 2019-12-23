@@ -5,5 +5,40 @@
 {% endblock title %}
 
 {% block body %}
+    <div class="d-flex container">
+        <h1>{{ category.categoryName }}</h1>
+    </div>
+    <div class="container">
+        <div class="row mt-5">
+            <div class="d-flex col-sm">
+                Название
+            </div>
+            <div class="d-flex col-sm">
+                Описание
+            </div>
+            <div class="d-flex col-sm">
+                Количество сообщений
+            </div>
+            <div class="d-flex col-sm">
+                Количество подкатегорий
+            </div>
+        </div>
 
+        {% for subcategory in category.subcategories %}
+            <div class="row mt-5">
+                <div class="d-flex col-sm">
+                    <a href="{{ path('forum_category', {'categoryName': subcategory.categoryName}) }}">{{ subcategory.categoryName }}</a>
+                </div>
+                <div class="d-flex col-sm">
+                    {{ subcategory.description }}
+                </div>
+                <div class="d-flex col-sm">
+                    {{ subcategory.messages|length }}
+                </div>
+                <div class="d-flex col-sm">
+                    {{ subcategory.subcategories|length }}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock body %}

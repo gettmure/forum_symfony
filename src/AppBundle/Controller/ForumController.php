@@ -22,29 +22,18 @@ class ForumController extends Controller
     {
         $entityManager = $this->getDoctrine()->getManager();
         $categories = $entityManager->getRepository('AppBundle:Categories')->findBy(['parent' => null]);
-//        dump($categories);
-//        $messages = [];
-//        $subcategories = $entityManager->getRepository('AppBundle:Categories')->;
-//        foreach ($categories as $category) {
-//            $messages[] = $entityManager->getRepository('AppBundle:Messages')->findBy(['category' => $category]);
-//            $subcategories[] = $entityManager->getRepository('AppBundle:Categories')->findBy(['parent' => $category]);
-//        }
-        dump($categories);
         return $this->render('forum/index.html.twig', [
             'categories' => $categories
         ]);
     }
 
     /**
-     * @Route("/{categoryName}", name="forum_category")
+     * @Route("/showCategory={categoryName}", name="forum_category")
      */
     public function showCategoryPage($categoryName)
     {
         $entityManager = $this->getDoctrine()->getManager();
         $category = $entityManager->getRepository('AppBundle:Categories')->findOneBy(['categoryName' => $categoryName]);
-        $subcategories = $entityManager->getRepository('AppBundle:Categories')->findBy(['parent' => $category]);
-        dump($subcategories);
-//        dump($category);
         return $this->render('forum/category.html.twig', [
             'category' => $category,
         ]);
