@@ -3,14 +3,15 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Categories;
-use AppBundle\Entity\Category;
-use AppBundle\Entity\Message;
 use AppBundle\Entity\Messages;
-use AppBundle\Entity\User;
+use AppBundle\Entity\Users;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use AppBundle\Form\MessageFormType;
 
 class ForumController extends Controller
 {
@@ -30,12 +31,40 @@ class ForumController extends Controller
     /**
      * @Route("/showCategory={categoryName}", name="forum_category")
      */
-    public function showCategoryPage($categoryName)
+    public function showCategoryPage($categoryName, Request $request)
     {
         $entityManager = $this->getDoctrine()->getManager();
         $category = $entityManager->getRepository('AppBundle:Categories')->findOneBy(['categoryName' => $categoryName]);
+
+        $form = $this->createForm(MessageFormType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()){
+            $data = $form->getData();
+            dump($data);
+
+            $author = $entityManager->getRepository('AppBundle:Users')->findOneBy(['name' => $data['authorName']]);
+            $message = new Messages();
+
+            if (!$author) {
+                return $this->render('forum/category.html.twig', [
+                    'category' => $category,
+                    'message' => null,
+                    'form' => $form->createView(),
+                ]);
+            }
+
+            $message->setAuthor($author);
+            $message->setText($data['text']);
+            $message->setCategory($category);
+            $message->setPostedAt(new \DateTime(date('m/d/Y h:i:s a', time())));
+            $entityManager->persist($message);
+            $entityManager->flush();
+        }
+
+
         return $this->render('forum/category.html.twig', [
             'category' => $category,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -49,46 +78,5 @@ class ForumController extends Controller
         return $this->render('forum/query.html.twig', [
             'data' => $queryData,
         ]);
-    }
-
-    /**
-     * @Route("/new", name="forum_new_message")
-     */
-    public function showNewMessagePage()
-    {
-        return $this->render('forum/newMessage.html.twig', []);
-    }
-
-    /**
-     * @Route("/new/send", name="forum_send_message")
-     */
-    public function newMessageAction(Request $request)
-    {
-        $entityManager = $this->getDoctrine()->getManager();
-
-        $userName = $request->get('name');
-        $categoryName = $request->get('category_name');
-        $messageText = $request->get('text');
-
-        $userId = $entityManager->getRepository('AppBundle:Users')->findOneByUserName($userName);
-        $categoryId = $entityManager->getRepository('AppBundle:Categories')->findOneByCategoryName($categoryName);
-
-        if (!$userId || !$categoryId) {
-            return new JsonResponse(array(
-                'status' => 'Error',
-                'message' => 'Error'),
-                400);
-        }
-        else {
-            $newMessage = new Messages($userId, $categoryId, $messageText);
-            $entityManager->persist($newMessage);
-            $entityManager->flush();
-            return new JsonResponse(array(
-                'status' => 'OK',
-                'user_id' => $userId,
-                'category_id' => $categoryId,
-                'message_id' => $newMessage->getId()),
-                200);
-        }
     }
 }

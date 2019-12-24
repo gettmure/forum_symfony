@@ -3,6 +3,8 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\SequenceGenerator;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -14,6 +16,7 @@ use Ramsey\Uuid\Uuid;
  */
 class Messages
 {
+
     /**
      * @var string
      *
@@ -27,22 +30,7 @@ class Messages
      */
     private $category;
 
-    /**
-     * @return mixed
-     */
-    public function getCategory()
-    {
-        return $this->category;
-    }
 
-    /**
-     * @param mixed $category
-     * @return Categories
-     */
-    public function setCategory(Categories $category)
-    {
-        $this->category = $category;
-    }
 
     /**
      * @var \DateTime
@@ -52,28 +40,18 @@ class Messages
     private $postedAt;
 
     /**
-     * @var guid
-     *
-     * @ORM\Column(name="author_id", type="guid", nullable=false)
+     * @ORM\ManyToOne(targetEntity="Users")
      */
-    private $authorId;
+    private $author;
 
     /**
      * @var guid
      *
-     * @ORM\Column(name="id", type="guid")
+     * @ORM\Column(name="id", type="guid", nullable=false)
      * @ORM\Id
+     * @GeneratedValue(strategy="UUID")
      */
     private $id;
-
-    public function __construct($author, $category, $text)
-    {
-        $this->id = Uuid::uuid4();
-        $this->setAuthorId($author);
-        $this->setCategoryId($category);
-        $this->setPostedAt(new \DateTime());
-        $this->setText($text);
-    }
 
     /**
      * Set text
@@ -124,27 +102,20 @@ class Messages
     }
 
     /**
-     * Set authorId
-     *
-     * @param guid $authorId
-     *
-     * @return Messages
+     * @return mixed
      */
-    public function setAuthorId($authorId)
+    public function getAuthor()
     {
-        $this->authorId = $authorId;
-
-        return $this;
+        return $this->author;
     }
 
     /**
-     * Get authorId
-     *
-     * @return guid
+     * @param mixed $author
+     * @return Messages
      */
-    public function getAuthorId()
+    public function setAuthor($author)
     {
-        return $this->authorId;
+        $this->author = $author;
     }
 
     /**
@@ -155,5 +126,22 @@ class Messages
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
+     * @param mixed $category
+     * @return Categories
+     */
+    public function setCategory(Categories $category)
+    {
+        $this->category = $category;
     }
 }

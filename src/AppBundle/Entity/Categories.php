@@ -14,6 +14,7 @@ use Doctrine\Common\Collections\Collection;
  */
 class Categories
 {
+
     /**
      * @var string
      *
@@ -84,7 +85,7 @@ class Categories
     private $id;
 
     /**
-     * @return Collection|Messages[]
+     * @return mixed
      */
     public function getMessages()
     {
