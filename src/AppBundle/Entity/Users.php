@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\GeneratedValue;
 
 /**
  * Users
@@ -22,8 +23,9 @@ class Users
     /**
      * @var guid
      *
-     * @ORM\Column(name="id", type="guid")
+     * @ORM\Column(name="id", type="guid", nullable=false)
      * @ORM\Id
+     * @GeneratedValue(strategy="UUID")
      */
     private $id;
 

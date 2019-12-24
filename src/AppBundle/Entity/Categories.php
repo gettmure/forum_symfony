@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\GeneratedValue;
 
 /**
  * Categories
@@ -51,22 +52,6 @@ class Categories
     private $parent;
 
     /**
-     * @return mixed
-     */
-    public function getSubcategories()
-    {
-        return $this->subcategories;
-    }
-
-    /**
-     * @param mixed $subcategories
-     */
-    public function setSubcategories($subcategories)
-    {
-        $this->subcategories = $subcategories;
-    }
-
-    /**
      * @ORM\OneToMany(targetEntity="Categories", mappedBy="parent")
      */
     private $subcategories;
@@ -79,8 +64,9 @@ class Categories
     /**
      * @var guid
      *
-     * @ORM\Column(name="id", type="guid")
+     * @ORM\Column(name="id", type="guid", nullable=false)
      * @ORM\Id
+     * @GeneratedValue(strategy="UUID")
      */
     private $id;
 
@@ -91,8 +77,6 @@ class Categories
     {
         return $this->messages;
     }
-
-
 
     /**
      * Set categoryName
@@ -135,7 +119,21 @@ class Categories
         return $this->categoryName;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getSubcategories()
+    {
+        return $this->subcategories;
+    }
 
+    /**
+     * @param mixed $subcategories
+     */
+    public function setSubcategories($subcategories)
+    {
+        $this->subcategories = $subcategories;
+    }
 
     /**
      * Get id

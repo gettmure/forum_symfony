@@ -40,7 +40,6 @@ class ForumController extends Controller
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
             $data = $form->getData();
-            dump($data);
 
             $author = $entityManager->getRepository('AppBundle:Users')->findOneBy(['name' => $data['authorName']]);
             $message = new Messages();
@@ -48,7 +47,7 @@ class ForumController extends Controller
             if (!$author) {
                 return $this->render('forum/category.html.twig', [
                     'category' => $category,
-                    'message' => null,
+                    'messageCreated' => false,
                     'form' => $form->createView(),
                 ]);
             }
@@ -65,6 +64,7 @@ class ForumController extends Controller
         return $this->render('forum/category.html.twig', [
             'category' => $category,
             'form' => $form->createView(),
+            'messageCreated' => true,
         ]);
     }
 
