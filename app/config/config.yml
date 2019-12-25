@@ -30,11 +30,15 @@ framework:
     assets: ~
     php_errors:
         log: true
+    templating:
+        engines: ['twig']
 
 # Twig Configuration
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
+
+white_october_breadcrumbs: ~
 
 # Doctrine Configuration
 doctrine:

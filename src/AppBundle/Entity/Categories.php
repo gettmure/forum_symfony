@@ -93,7 +93,7 @@ class Categories
     }
 
     /**
-     * @return mixed
+     * @return Categories
      */
     public function getParent()
     {

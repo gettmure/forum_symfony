@@ -9,6 +9,15 @@
         <script>alert('Такого пользователя не существует!')</script>
     {% endif %}
 
+{#    <nav aria-label="breadcrumb">#}
+{#        <ol class="breadcrumb">#}
+{#            <li class="breadcrumb-item"><a href="{{ path('forum_index') }}">Home</a></li>#}
+{#            <li class="breadcrumb-item"><a href="#">Library</a></li>#}
+{#            <li class="breadcrumb-item active" aria-current="page">Data</li>#}
+{#        </ol>#}
+{#    </nav>#}
+    {{ wo_render_breadcrumbs() }}
+
     <div class="container">
         <h1 class="display-5 mt-5">
             <strong>

@@ -60,6 +60,25 @@ class ForumController extends Controller
             $entityManager->flush();
         }
 
+        $breadcrumbs = $this->get("white_october_breadcrumbs");
+        $node = $category;
+        while ($node) {
+//            dump($node);
+            $breadcrumbs->prependItem($node->getCategoryName(), sprintf('/showCategory=%s', $node->getCategoryName()));
+            $node = $node->getParent();
+        }
+        $breadcrumbs->prependItem('Главная', "/");
+        dump($breadcrumbs);
+//        die;
+//        $breadcrumbs = [];
+//        $breadcrumb = $category;
+//        dump($breadcrumb);
+//        while($breadcrumb->getParent() != null) {
+//            $breadcrumbs[] = $breadcrumb->getParent()->getCategoryName();
+//        }
+
+//        dump($breadcrumbs);
+
         return $this->render('forum/category.html.twig', [
             'category' => $category,
             'form' => $form->createView(),
