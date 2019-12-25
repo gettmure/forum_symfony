@@ -26,11 +26,9 @@ class Messages
 
     /**
      * @ORM\ManyToOne(targetEntity="Categories", inversedBy="messages")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
     private $category;
-
-
 
     /**
      * @var \DateTime

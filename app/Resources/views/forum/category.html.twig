@@ -5,44 +5,78 @@
 {% endblock title %}
 
 {% block body %}
-    {% if not messageCreated %}
+    {% if messageCreated is defined and not messageCreated %}
         <script>alert('Такого пользователя не существует!')</script>
     {% endif %}
+
     <div class="container">
-        <div class="row mt-5">
-            <div class="d-flex col-sm">
-                Название категории
-            </div>
-            <div class="d-flex col-sm">
-                Описание
-            </div>
-            <div class="d-flex col-sm">
-                Количество сообщений
-            </div>
-            <div class="d-flex col-sm">
-                Количество подкатегорий
-            </div>
-        </div>
-
-        {% for subcategory in category.subcategories %}
-            <div class="row mt-5">
-                <div class="d-flex col-sm">
-                    <a href="{{ path('forum_category', {'categoryName': subcategory.categoryName}) }}">{{ subcategory.categoryName }}</a>
-                </div>
-                <div class="d-flex col-sm">
-                    {{ subcategory.description }}
-                </div>
-                <div class="d-flex col-sm">
-                    {{ subcategory.messages|length }}
-                </div>
-                <div class="d-flex col-sm">
-                    {{ subcategory.subcategories|length }}
-                </div>
-            </div>
-        {% endfor %}
+        <h1 class="display-5 mt-5">
+            <strong>
+                Категория: {{ category.categoryName }}
+            </strong>
+            {% if category.subcategories is empty %}
+                (подкатегорий нет)
+            {% endif %}
+        </h1>
+        {% if not (category.subcategories is empty) %}
+            <table class="table mt-3 ">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">Название подкатегории</th>
+                    <th scope="col">Описание</th>
+                    <th scope="col">Количество сообщений</th>
+                    <th scope="col">Количество подкатегорий</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for subcategory in category.subcategories %}
+                    <tr>
+                        <th scope="row">
+                            <a href="{{ path('forum_category', {'categoryName': subcategory.categoryName}) }}">{{ subcategory.categoryName }}</a>
+                        </th>
+                        <td>
+                            {{ subcategory.description }}
+                        </td>
+                        <td>
+                            {{ subcategory.messages|length }}
+                        </td>
+                        <td>
+                            {{ subcategory.subcategories|length }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+        <h2 class="mt-5">
+            {% if category.messages is empty %}
+                <strong>
+                    Сообщений нет!
+                </strong>
+            {% else %}
+                <strong>
+                    Сообщения [{{ category.messages|length }}]:
+                </strong>
+                <hr>
+            {% endif %}
+        </h2>
+        {% if not (category.messages is empty) %}
+            <ul class="list-unstyled">
+                {% for message in category.messages %}
+                    <li class="media">
+                        <div class="media-body">
+                            <h5 class="mt-0 mb-1">{{ message.author.name }} оставил сообщение в {{ message.postedAt|date("H:m:s")}}, {{  message.postedAt|date("d/m/y") }}</h5>
+                            <p class="ml-3">{{ message.text }}</p>
+                            <hr>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <h4 class="mb-4 mt-4">
+            <strong>
+                Добавить сообщение
+            </strong>
+        </h4>
         {{ form(form) }}
-    </div>
 {% endblock body %}
-
-{% block javascripts %}
-{% endblock javascripts %}

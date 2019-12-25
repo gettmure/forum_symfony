@@ -60,11 +60,9 @@ class ForumController extends Controller
             $entityManager->flush();
         }
 
-
         return $this->render('forum/category.html.twig', [
             'category' => $category,
             'form' => $form->createView(),
-            'messageCreated' => true,
         ]);
     }
 

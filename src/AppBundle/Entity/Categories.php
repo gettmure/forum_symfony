@@ -71,7 +71,7 @@ class Categories
     private $id;
 
     /**
-     * @return mixed
+     * @return ArrayCollection|Messages[]
      */
     public function getMessages()
     {
@@ -120,7 +120,7 @@ class Categories
     }
 
     /**
-     * @return mixed
+     * @return ArrayCollection|Categories[]
      */
     public function getSubcategories()
     {
